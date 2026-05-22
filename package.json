@@ -5,18 +5,15 @@
   "main": "plugin.js",
   "types": "plugin.d.ts",
   "scripts": {
-    "test": "node --test && npm run typescript",
+    "test": "node --test test/*.test.js && npm run typescript",
     "lint": "standard | snazzy",
     "lint:fix": "standard --fix | snazzy",
-    "typescript": "tsd"
+    "typescript": "tstyche"
   },
   "precommit": [
     "lint",
     "test"
   ],
-  "tsd": {
-    "directory": "test"
-  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/nearform/fastify-casbin.git"
@@ -46,7 +43,7 @@
     "sinon": "^21.0.0",
     "snazzy": "^9.0.0",
     "standard": "^17.1.2",
-    "tsd": "^0.32.0",
+    "tstyche": "^7.1.0",
     "typescript": "^5.7.2"
   }
 }

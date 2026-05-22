@@ -1,8 +1,10 @@
+/// <reference types="node" />
+
 import { Enforcer, FileAdapter, Model, Watcher } from 'casbin'
 import fastify from 'fastify'
-import { expectAssignable, expectType } from 'tsd'
+import { expect } from 'tstyche'
 
-import fastifyCasbin from '../plugin'
+import fastifyCasbin from '../../plugin'
 
 class TestWatcher implements Watcher {
   setUpdateCallback(cb: () => void): void {}
@@ -47,7 +49,5 @@ server.register(fastifyCasbin, {
   watcher: new TestWatcher(),
 })
 
-expectAssignable<Enforcer>(server.casbin)
-expectType<CasbinJsGetPermissionsForUser>(
-  server.casbin.casbinJsGetPermissionForUser
-)
+expect(server.casbin).type.toBeAssignableTo<Enforcer>()
+expect(server.casbin.casbinJsGetPermissionForUser).type.toBe<CasbinJsGetPermissionsForUser>()
