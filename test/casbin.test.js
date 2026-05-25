@@ -69,7 +69,7 @@ test('casbinJsGetPermissionForUser should exist', async (t) => {
 
   await fastify.ready()
   t.assert.ok(!!fastify.casbin)
-  t.assert.ok(fastify.casbin.casbinJsGetPermissionForUser !== undefined)
+  t.assert.ok(!!fastify.casbin.casbinJsGetPermissionForUser)
 
   await fastify.close()
 })
@@ -98,7 +98,7 @@ test('calls casbinJsGetPermissionForUser with enforcer', async (t) => {
 
   await fastify.ready()
 
-  t.assert.ok(fastify.casbin.casbinJsGetPermissionForUser !== undefined)
+  t.assert.ok(!!fastify.casbin.casbinJsGetPermissionForUser)
 
   await fastify.close()
 })
