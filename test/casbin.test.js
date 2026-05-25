@@ -6,7 +6,6 @@ import { Model, FileAdapter, setDefaultFileSystem } from 'casbin'
 import fs from 'node:fs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const plugin = await import('../index.js')
 
 const modelPath = path.join(__dirname, 'fixtures', 'basic_model.conf')
 const policyPath = path.join(__dirname, 'fixtures', 'basic_policy.csv')
@@ -16,7 +15,7 @@ setDefaultFileSystem(fs)
 test('casbin should exist', async (t) => {
   const fastify = Fastify()
 
-  fastify.register(plugin.default, {
+  fastify.register(import('../index.js'), {
     model: modelPath,
     adapter: policyPath
   })
@@ -30,10 +29,10 @@ test('casbin should exist', async (t) => {
 test('preloaded model and adapter should be accepted', async (t) => {
   const fastify = Fastify()
   const preloadedModel = new Model()
-  preloadedModel.loadModel(modelPath)
+  preloadedModel.loadModelFromFile(modelPath)
   const preloadedAdapter = new FileAdapter(policyPath)
 
-  fastify.register(plugin.default, {
+  fastify.register(import('../index.js'), {
     model: preloadedModel,
     adapter: preloadedAdapter
   })
@@ -49,7 +48,7 @@ test('adapter can be omitted for in-memory storage', async (t) => {
   const preloadedModel = new Model()
   preloadedModel.loadModelFromFile(modelPath)
 
-  fastify.register(plugin.default, {
+  fastify.register(import('../index.js'), {
     model: preloadedModel
   })
 
@@ -62,7 +61,7 @@ test('adapter can be omitted for in-memory storage', async (t) => {
 test('casbinJsGetPermissionForUser should exist', async (t) => {
   const fastify = Fastify()
 
-  fastify.register(plugin.default, {
+  fastify.register(import('../index.js'), {
     model: modelPath,
     adapter: policyPath
   })
@@ -77,7 +76,7 @@ test('casbinJsGetPermissionForUser should exist', async (t) => {
 test('calls loadPolicy on enforcer', async (t) => {
   const fastify = Fastify()
 
-  fastify.register(plugin.default, {
+  fastify.register(import('../index.js'), {
     model: modelPath,
     adapter: policyPath
   })
@@ -91,7 +90,7 @@ test('calls loadPolicy on enforcer', async (t) => {
 test('calls casbinJsGetPermissionForUser with enforcer', async (t) => {
   const fastify = Fastify()
 
-  fastify.register(plugin.default, {
+  fastify.register(import('../index.js'), {
     model: modelPath,
     adapter: policyPath
   })
@@ -110,7 +109,7 @@ test('sets watcher on enforcer when provided', async (t) => {
     setUpdateCallback: () => {}
   }
 
-  fastify.register(plugin.default, {
+  fastify.register(import('../index.js'), {
     model: modelPath,
     adapter: policyPath,
     watcher
@@ -136,7 +135,7 @@ test('closes adapter and watcher', async (t) => {
     close: () => { watcherClosed = true }
   }
 
-  fastify.register(plugin.default, {
+  fastify.register(import('../index.js'), {
     model: modelPath,
     adapter,
     watcher
@@ -148,4 +147,18 @@ test('closes adapter and watcher', async (t) => {
   await fastify.close()
   t.assert.ok(adapterClosed)
   t.assert.ok(watcherClosed)
+})
+
+test('can register plugin from name export', async (t) => {
+  const fastify = Fastify()
+
+  fastify.register(import('../index.js').then(module => module.fastifyCasbin), {
+    model: modelPath,
+    adapter: policyPath
+  })
+
+  await fastify.ready()
+  t.assert.ok(!!fastify.casbin)
+
+  await fastify.close()
 })

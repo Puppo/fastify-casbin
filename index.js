@@ -1,7 +1,7 @@
 import fp from 'fastify-plugin'
 import { newEnforcer, casbinJsGetPermissionForUser } from 'casbin'
 
-async function fastifyCasbin (fastify, { model, adapter, watcher }) {
+export async function fastifyCasbin (fastify, { model, adapter, watcher }) {
   const enforcerParams = adapter ? [model, adapter] : [model]
   const enforcer = await newEnforcer(...enforcerParams)
 
@@ -28,5 +28,6 @@ async function fastifyCasbin (fastify, { model, adapter, watcher }) {
 }
 
 export default fp(fastifyCasbin, {
-  name: 'fastify-casbin'
+  name: 'fastify-casbin',
+  fastify: '5.x'
 })

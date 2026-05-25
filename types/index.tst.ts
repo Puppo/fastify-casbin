@@ -2,7 +2,7 @@ import type { Adapter, Enforcer, Model, Watcher } from 'casbin'
 import type { FastifyInstance, FastifyPluginAsync } from 'fastify'
 import { describe, expect, test } from 'tstyche'
 import type { FastifyCasbinOptions } from './index.js'
-import fastifyCasbin from './index.js'
+import fastifyCasbin, { fastifyCasbin as fastifyCasbinPlugin } from './index.js'
 
 describe('fastifyCasbin plugin', () => {
   test('is defined', () => {
@@ -11,6 +11,16 @@ describe('fastifyCasbin plugin', () => {
 
   test('is a FastifyPluginAsync with FastifyCasbinOptions', () => {
     expect(fastifyCasbin).type.toBe<FastifyPluginAsync<FastifyCasbinOptions>>()
+  })
+})
+
+describe('fastifyCasbinPlugin plugin', () => {
+  test('is defined', () => {
+    expect(fastifyCasbinPlugin).type.not.toBe<undefined>()
+  })
+
+  test('is a FastifyPluginAsync with FastifyCasbinOptions', () => {
+    expect(fastifyCasbinPlugin).type.toBe<FastifyPluginAsync<FastifyCasbinOptions>>()
   })
 })
 
