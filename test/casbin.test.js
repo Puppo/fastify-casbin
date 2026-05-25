@@ -22,8 +22,7 @@ test('casbin should exist', async (t) => {
   })
 
   await fastify.ready()
-  t.assert.ok(!fastify.casbin === false)
-  t.assert.ok(fastify.casbin !== undefined)
+  t.assert.ok(!!fastify.casbin)
 
   await fastify.close()
 })
@@ -40,8 +39,7 @@ test('preloaded model and adapter should be accepted', async (t) => {
   })
 
   await fastify.ready()
-  t.assert.ok(!fastify.casbin === false)
-  t.assert.ok(fastify.casbin !== undefined)
+  t.assert.ok(!!fastify.casbin)
 
   await fastify.close()
 })
@@ -49,15 +47,14 @@ test('preloaded model and adapter should be accepted', async (t) => {
 test('adapter can be omitted for in-memory storage', async (t) => {
   const fastify = Fastify()
   const preloadedModel = new Model()
-  preloadedModel.loadModel(modelPath)
+  preloadedModel.loadModelFromFile(modelPath)
 
   fastify.register(plugin.default, {
     model: preloadedModel
   })
 
   await fastify.ready()
-  t.assert.ok(!fastify.casbin === false)
-  t.assert.ok(fastify.casbin !== undefined)
+  t.assert.ok(!!fastify.casbin)
 
   await fastify.close()
 })
@@ -71,7 +68,7 @@ test('casbinJsGetPermissionForUser should exist', async (t) => {
   })
 
   await fastify.ready()
-  t.assert.ok(!fastify.casbin === false)
+  t.assert.ok(!!fastify.casbin)
   t.assert.ok(fastify.casbin.casbinJsGetPermissionForUser !== undefined)
 
   await fastify.close()
@@ -86,7 +83,7 @@ test('calls loadPolicy on enforcer', async (t) => {
   })
 
   await fastify.ready()
-  t.assert.ok(!fastify.casbin === false)
+  t.assert.ok(!!fastify.casbin)
 
   await fastify.close()
 })
@@ -120,8 +117,7 @@ test('sets watcher on enforcer when provided', async (t) => {
   })
 
   await fastify.ready()
-  t.assert.ok(!fastify.casbin === false)
-  t.assert.ok(fastify.casbin !== undefined)
+  t.assert.ok(!!fastify.casbin)
 
   await fastify.close()
 })
@@ -147,7 +143,7 @@ test('closes adapter and watcher', async (t) => {
   })
 
   await fastify.ready()
-  t.assert.ok(!fastify.casbin === false)
+  t.assert.ok(!!fastify.casbin)
 
   await fastify.close()
   t.assert.ok(adapterClosed)
