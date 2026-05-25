@@ -4,9 +4,9 @@
   "description": "Plugin for fastify to add generic support for Casbin",
   "type": "module",
   "main": "index.js",
-  "types": "index.d.ts",
+  "types": "types/index.d.ts",
   "scripts": {
-    "test": "node --test test/*.test.js && npm run typescript",
+    "test": "node --test && npm run typescript",
     "lint": "standard | snazzy",
     "lint:fix": "standard --fix | snazzy",
     "typescript": "tstyche"
