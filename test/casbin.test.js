@@ -1,11 +1,10 @@
 import path from 'node:path'
-import { fileURLToPath } from 'node:url'
 import { test } from 'node:test'
 import Fastify from 'fastify'
 import { Model, FileAdapter, setDefaultFileSystem } from 'casbin'
 import fs from 'node:fs'
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const __dirname = import.meta.dirname
 
 const modelPath = path.join(__dirname, 'fixtures', 'basic_model.conf')
 const policyPath = path.join(__dirname, 'fixtures', 'basic_policy.csv')
